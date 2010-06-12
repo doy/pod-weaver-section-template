@@ -6,6 +6,27 @@ with 'Pod::Weaver::Role::Section';
 
 use Text::Template 'fill_in_file';
 
+=head1 SYNOPSIS
+
+  # weaver.ini
+  [Template / SUPPORT]
+  template = ~/.dzil/pod_templates/support.section
+  main_module_only = 1
+
+=head1 DESCRIPTION
+
+This plugin generates a pod section based on the contents of a template file.
+The template is parsed using L<Text::Template>, and is then interpreted as pod.
+When parsing the template, any options specified in the plugin configuration
+which aren't configuration options for this plugin will be provided as
+variables for the template. Also, if this is being run as part of a
+L<Dist::Zilla> build process, the values of all of the attributes on the
+C<zilla> object will be available as variables, and the additional variable
+C<$main_module_name> will be defined as the module name for the C<main_module>
+file.
+
+=cut
+
 use Moose::Util::TypeConstraints;
 
 subtype 'PWST::File',
@@ -18,6 +39,12 @@ coerce 'PWST::File',
 
 no Moose::Util::TypeConstraints;
 
+=attr template
+
+The file to be run through Text::Template and added as a pod section. Required.
+
+=cut
+
 has template => (
     is       => 'ro',
     isa      => 'PWST::File',
@@ -25,11 +52,25 @@ has template => (
     coerce   => 1,
 );
 
+=attr header
+
+The section header. Defaults to the plugin name.
+
+=cut
+
 has header => (
     is      => 'ro',
     isa     => 'Str',
     default => sub { shift->plugin_name },
 );
+
+=attr main_module_only
+
+If L<Pod::Weaver> is being run through L<Dist::Zilla>, this option determines
+whether to add the section to each module in the distribution, or to just the
+distribution's main module. Defaults to false.
+
+=cut
 
 has main_module_only => (
     is  => 'ro',
@@ -138,5 +179,13 @@ sub weave_section {
 
 __PACKAGE__->meta->make_immutable;
 no Moose;
+
+=head1 SEE ALSO
+
+L<Text::Template>
+L<Pod::Weaver>
+L<Dist::Zilla>
+
+=cut
 
 1;
