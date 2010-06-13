@@ -97,7 +97,7 @@ sub BUILD {
     $self->extra_args($copy);
 }
 
-sub main_module_name {
+sub _main_module_name {
     my $self = shift;
     my ($zilla) = @_;
     return unless $zilla;
@@ -112,7 +112,7 @@ sub main_module_name {
     return $main_module_name;
 }
 
-sub parse_pod {
+sub _parse_pod {
     my $self = shift;
     my ($pod) = @_;
 
@@ -135,7 +135,7 @@ sub parse_pod {
     return $children;
 }
 
-sub get_zilla_hash {
+sub _get_zilla_hash {
     my $self = shift;
     my ($zilla) = @_;
     my %zilla_hash;
@@ -144,7 +144,7 @@ sub get_zilla_hash {
         my $value = $attr->get_value($zilla);
         $zilla_hash{$attr->name} = blessed($value) ? \$value : $value;
     }
-    $zilla_hash{main_module_name} = $self->main_module_name($zilla);
+    $zilla_hash{main_module_name} = $self->_main_module_name($zilla);
     return %zilla_hash;
 }
 
@@ -164,7 +164,7 @@ sub weave_section {
         $self->template,
         DELIMITERS => $self->delim,
         HASH       => {
-            $zilla ? ($self->get_zilla_hash($zilla)) : (),
+            $zilla ? ($self->_get_zilla_hash($zilla)) : (),
             %{ $self->extra_args },
         },
     );
@@ -173,7 +173,7 @@ sub weave_section {
         Pod::Elemental::Element::Nested->new(
             command  => 'head1',
             content  => $self->header,
-            children => $self->parse_pod($pod),
+            children => $self->_parse_pod($pod),
         );
 }
 
@@ -185,6 +185,13 @@ no Moose;
 L<Text::Template>
 L<Pod::Weaver>
 L<Dist::Zilla>
+
+=begin Pod::Coverage
+
+  BUILD
+  weave_section
+
+=end Pod::Coverage
 
 =cut
 
