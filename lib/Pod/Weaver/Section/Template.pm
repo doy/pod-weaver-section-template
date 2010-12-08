@@ -25,6 +25,167 @@ C<zilla> object will be available as variables, and the additional variable
 C<$main_module_name> will be defined as the module name for the C<main_module>
 file.
 
+=head2 Variables Available in Template from the zilla object
+
+To discover these variables I created a template with the following construct:
+
+{{ use Data::Dumper }}
+{{ Dumper $fi_varhash }}
+
+then did the same for each of the top level values reported there.
+
+Each variable is listed with its name and its type in parenthesis.
+
+=over 4
+
+=item * abstract (scalar)
+
+The abstract defined with # ABSTRACT
+
+{{ $abstract }}
+
+=item * authors (array)
+
+An array of scalars containing the authors of the module.
+
+{{ $OUT .= join "\n", @authors }}
+
+=item * built_in
+
+Unknown.
+
+=item * chrome (Dist::Zilla::Chrome::Term)
+
+Doesn't appear to be usable in a template.
+
+=item * distmeta (hash)
+
+=over 4
+
+=item * abstract (scalar)
+
+See C<abstract> elsewhere in this document.
+
+=item * author (array)
+
+See C<authors> elsewhere in this document.
+
+=item * dynamic_config (scalar)
+
+Unknown.
+
+=item * generated_by (scalar)
+
+The version of Dist::Zilla generating this distribution.
+
+=item * license (scalar)
+
+Equivalent to {{ lc $license->meta2_name }}
+
+=item * meta-spec (hash)
+
+Version and url of the meta specification being used.
+
+{{ $distmeta{ 'meta-spec' }{ 'url' } }}
+
+=item * name (scalar)
+
+See C<name> elsewhere in this document.
+
+=item * no_index (hash)
+
+Key is 'directory'.  Contains array of directories (files?) that are not to be
+indexed.
+
+=item * provides (hash)
+
+What packages this distribution provides as keys, the hash contains version and
+filename.
+
+=item * release_status (scalar)
+
+This distributions release status.
+
+=item * resources (hash)
+
+{{ use Data::Dumper;
+   Dumper $distmeta{ 'resources' }
+}}
+
+=item * version
+
+See C<version> elsewhere in this document.
+
+=back
+
+=item * files (array of Dist::Zilla::File::?????)
+
+The files to be written out.
+
+{{ $OUT = join "\n", map { $_->name } @files }}
+
+See L<Dist::Zilla::File> for documentation for this object.
+
+=item * is_trial (scalar)
+
+Unknown.
+
+=item * license (Software::License::????)
+
+Whatever you have set your license type to.
+
+{{ $license->meta2_name }}
+
+See L<Software::License> for documentation for this object.
+
+=item * logger (Log::Dispatchouli::Proxy)
+
+Doesn't appear to be usable in a template.
+
+See L<Log::Dispatchouli::Proxy> for documentation for this object.
+
+=item * main_module (Dist::Zilla::File::????)
+
+The name of the file that is being used as the main module file.
+
+{{ $main_module->name }}
+
+See L<Dist::Zilla::File> for documentation for this object.
+
+=item * main_module_name (scalar)
+
+The module name for the C<main_module> file, as described above.
+
+{{ $main_module_name }}
+
+=item * name (scalar)
+
+The package name. I think.
+
+{{ $name }}
+
+=item * prereqs (Dist::Zilla::Prereqs)
+
+Don't know if its usable in a template.
+
+See L<Dist::Zilla::Prereqs> for documentation for this object.
+
+=item * root (Path::Class::Dir)
+
+I believe this is the root directory we are working from.
+
+{{ $root }}
+
+See L<Path::Class::Dir> for documentation for this object.
+
+=item * version (scalar)
+
+The version number for the distribution.
+
+{{ $version }}
+
+=back
+
 =cut
 
 use Moose::Util::TypeConstraints;
