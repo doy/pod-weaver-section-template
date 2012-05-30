@@ -61,6 +61,7 @@ The section header. Defaults to the plugin name.
 has header => (
     is      => 'ro',
     isa     => 'Str',
+    lazy    => 1,
     default => sub { shift->plugin_name },
 );
 

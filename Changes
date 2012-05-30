@@ -1,6 +1,7 @@
 Revision history for Pod-Weaver-Section-Template
 
 {{$NEXT}}
+      - Fix order-of-initialization bug (thanks, Christopher J. Madsen)
 
 0.01  2010-06-13
       - Initial release
