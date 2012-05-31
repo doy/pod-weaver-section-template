@@ -151,6 +151,16 @@ sub _get_zilla_hash {
     return %zilla_hash;
 }
 
+sub _template_error
+{
+  my ($self, %e) = @_;
+
+  # Put the template's filename into the error message:
+  $e{error} =~ s/(?<= at )template(?= line \d)/ $self->template /eg;
+
+  $self->log_fatal($e{error});
+}
+
 sub weave_section {
     my $self = shift;
     my ($document, $input) = @_;
@@ -165,6 +175,7 @@ sub weave_section {
         unless -r $self->template;
     my $pod = fill_in_file(
         $self->template,
+        BROKEN     => sub { $self->_template_error(@_) },
         DELIMITERS => $self->delim,
         HASH       => {
             $zilla ? ($self->_get_zilla_hash($zilla)) : (),
