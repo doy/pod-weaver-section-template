@@ -18,8 +18,8 @@ use Text::Template 'fill_in_file';
 This plugin generates a pod section based on the contents of a template file.
 The template is parsed using L<Text::Template>, and is then interpreted as pod.
 When parsing the template, C<$filename> will be the name of the file being
-woven (if that was passed to Pod::Weaver), and C<$plugin> will be this plugin.
-Any options specified in the plugin configuration
+woven (if that was passed to L<Pod::Weaver>), and C<$plugin> will be this
+plugin. Any options specified in the plugin configuration
 which aren't configuration options for this plugin will be provided as
 variables for the template. Also, if this is being run as part of a
 L<Dist::Zilla> build process, the values of all of the attributes on the
