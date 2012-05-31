@@ -1,6 +1,8 @@
 Revision history for Pod-Weaver-Section-Template
 
 {{$NEXT}}
+
+0.02  2012-05-31
       Improvements by new co-maintainer Christopher J. Madsen:
       - Make $filename and $plugin available to templates
       - Fix order-of-initialization bug
